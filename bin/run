@@ -1,5 +1,13 @@
 #!/bin/sh
 
+while getopts 'w' c
+do
+  case $c in
+    w) WATCH=true ;;
+  esac
+done
+
+
 PROJECT_ROOT=`dirname $0`/..
 . $PROJECT_ROOT/.env
 

@@ -1,0 +1,60 @@
+version: '3.7'
+
+services:
+  nest:
+    container_name: nsx-api
+    image: node:14.16.0-alpine
+    volumes:
+      - type: bind
+        source: ../../
+        target: /nsx-api
+    env_file: ../../.env
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      DB_HOST: database
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    ports:
+      - 3000:3000
+      - 9229:9229
+    working_dir: /nsx-api
+    command: yarn run ${NEST_SCRIPT}
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'netstat -tulnp | grep 3000']
+      interval: 3s
+      timeout: 3s
+      retries: 50
+
+  database:
+    container_name: nsx-db
+    image: postgres:12
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file: ../../.env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
+      PGPASSWORD: ${PGPASSWORD}
+      TZ: ${POSTGRES_TZ}
+    # Open 5433 on host for developers to connect if needed.
+    # NOTE: nest service will NOT use this. It connects to 5432.
+    ports:
+      - 5433:${DB_PORT}
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME} -d ${DB_NAME}']
+      interval: 1s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:
