@@ -29,8 +29,8 @@ export class Contact extends BaseEntity {
   name: string;
 
   @Index({ unique: true })
-  @Column()
-  email: string;
+  @Column({ nullable: true })
+  email?: string;
 
   @Index()
   @Column({ nullable: true })
