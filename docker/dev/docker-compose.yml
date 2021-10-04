@@ -17,8 +17,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
     ports:
-      - 3000:3000
-      - 9229:9229
+      - 4000:3000
+      - 4229:9229
     working_dir: /contact-list-api
     command: yarn run ${NEST_SCRIPT}
     depends_on:
@@ -45,10 +45,10 @@ services:
       POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
       PGPASSWORD: ${PGPASSWORD}
       TZ: ${POSTGRES_TZ}
-    # Open 5433 on host for developers to connect if needed.
+    # Open 4433 on host for developers to connect if needed.
     # NOTE: nest service will NOT use this. It connects to 5432.
     ports:
-      - 5433:${DB_PORT}
+      - 4433:${DB_PORT}
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME} -d ${DB_NAME}']
       interval: 1s
