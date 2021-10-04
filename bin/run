@@ -1,0 +1,14 @@
+#!/bin/sh
+
+PROJECT_ROOT=`dirname $0`/..
+. $PROJECT_ROOT/.env
+
+# Determine which nest script to run
+NEST_SCRIPT="nest"
+if test "$WATCH" = "true"; then
+  NEST_SCRIPT="nest:dev"
+fi
+
+# Start Server!
+export NEST_SCRIPT NODE_ENV DB_PORT DB_USERNAME DB_PASSWORD DB_NAME POSTGRES_INITDB_ARGS PGPASSWORD POSTGRES_TZ HASURA_GRAPHQL_ADMIN_SECRET HASURA_GRAPHQL_UNAUTHORIZED_ROLE HASURA_GRAPHQL_REMOTE_SCHEMA_TO_NSX_API
+docker-compose -f $PROJECT_ROOT/docker/dev/docker-compose.yml -p nsx up
