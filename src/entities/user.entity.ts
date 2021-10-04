@@ -4,8 +4,6 @@ import {
   Column,
   Entity,
   Index,
-  JoinColumn,
-  ManyToOne,
   OneToMany,
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
@@ -21,10 +19,6 @@ export class User extends BaseEntity {
   @Index({ unique: true })
   @Column()
   email: string;
-
-  @Index()
-  @Column({ nullable: true })
-  phoneNumber?: string;
 
   @OneToMany(() => Contact, (contact) => contact.user)
   contacts: Contact[];
