@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  nest:
+  contact-list-api:
     container_name: contact-list-api
     image: node:14.16.0-alpine
     volumes:
@@ -11,7 +11,7 @@ services:
     env_file: ../../.env
     environment:
       NODE_ENV: ${NODE_ENV}
-      DB_HOST: database
+      DB_HOST: contact-list-database
       DB_PORT: ${DB_PORT}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -22,19 +22,18 @@ services:
     working_dir: /contact-list-api
     command: yarn run ${NEST_SCRIPT}
     depends_on:
-      database:
-        condition: service_healthy
-      redis:
+      contact-list-database:
         condition: service_healthy
     healthcheck:
-      test: ['CMD-SHELL', 'netstat -tulnp | grep 3000']
+      test: ['CMD-SHELL', 'netstat -tulnp | grep 4000']
       interval: 3s
       timeout: 3s
       retries: 50
 
-  database:
+  contact-list-database:
     container_name: contact-list-db
     image: postgres:12
+    restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
     env_file: ../../.env
@@ -46,11 +45,12 @@ services:
       PGPASSWORD: ${PGPASSWORD}
       TZ: ${POSTGRES_TZ}
     # Open 4433 on host for developers to connect if needed.
-    # NOTE: nest service will NOT use this. It connects to 5432.
+    # NOTE: nest service will NOT use this. It connects to 4432.
     ports:
-      - 4433:${DB_PORT}
+      - 5433:${DB_PORT}
+    command: -p ${DB_PORT}
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME} -d ${DB_NAME}']
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME} -d ${DB_NAME} -p ${DB_PORT}']
       interval: 1s
       timeout: 3s
       retries: 20
