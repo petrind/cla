@@ -9,6 +9,8 @@ import { User } from '@entities/user.entity';
 import { Contact } from '@entities/contact.entity';
 import { CreateContacListDto } from '../dto/create-contact-list.dto';
 import { UpdateContactListDto } from '../dto/update-contact-list.dto';
+import { AddContactsToContacListDto } from '../dto/add-contacts-to-contact-list.dto';
+import { RemoveContactsFromContacListDto } from '../dto/remove-contacts-from-contact-list.dto';
 
 describe(ContactListService.name, () => {
   let module: TestingModule;
@@ -95,22 +97,6 @@ describe(ContactListService.name, () => {
     });
   });
 
-  describe('getContactsInContactList', () => {
-    it('get contacts in contact list correctly', async () => {
-      const contactListFromDb = await contactListRepo.findOne(
-        {
-          userId: userForTest.id,
-        },
-        { relations: ['contacts'] },
-      );
-      const getContacts = await contactlistService.getContactsInContactList(
-        contactListFromDb.id,
-      );
-      expect(getContacts.length).toEqual(1);
-      expect(getContacts[0].id).toEqual(contactListFromDb.contacts[0].id);
-    });
-  });
-
   describe('updateContactList', () => {
     it('update contact list by id correctly', async () => {
       const contactListFromDb = await contactListRepo.findOne();
@@ -130,9 +116,67 @@ describe(ContactListService.name, () => {
     });
   });
 
-  // addContactsToContactList
+  describe('addContactsToContactList', () => {
+    it('add contacts to contact list correctly', async () => {
+      const contactListFromDb = await contactListRepo.findOne({
+        userId: userForTest.id,
+      });
+      const addContactsToContacListDto: AddContactsToContacListDto = {
+        contactIds: [contactForTest.id],
+      };
+      await contactlistService.addContactsToContactList(
+        addContactsToContacListDto,
+        contactListFromDb.id,
+      );
+      const addedContactListFromDb = await contactListRepo.findOne(
+        {
+          userId: userForTest.id,
+        },
+        { relations: ['contacts'] },
+      );
 
-  // removeContactsFromContactList
+      expect(addedContactListFromDb.contacts[0].id).toEqual(contactForTest.id);
+    });
+  });
+
+  describe('getContactsInContactList', () => {
+    it('get contacts in contact list correctly', async () => {
+      const contactListFromDb = await contactListRepo.findOne(
+        {
+          userId: userForTest.id,
+        },
+        { relations: ['contacts'] },
+      );
+      const getContacts = await contactlistService.getContactsInContactList(
+        contactListFromDb.id,
+      );
+      expect(getContacts.length).toEqual(1);
+      expect(getContacts[0].id).toEqual(contactListFromDb.contacts[0].id);
+    });
+  });
+
+  describe('removeContactsFromContactList', () => {
+    it('remove contacts from contact list correctly', async () => {
+      const contactListFromDb = await contactListRepo.findOne({
+        userId: userForTest.id,
+      });
+      const removeContactsToContacListDto: RemoveContactsFromContacListDto = {
+        contactIds: [contactForTest.id],
+      };
+      await contactlistService.removeContactsFromContactList(
+        removeContactsToContacListDto,
+        contactListFromDb.id,
+      );
+      const addedContactListFromDb = await contactListRepo.findOne(
+        {
+          userId: userForTest.id,
+        },
+        { relations: ['contacts'] },
+      );
+
+      expect(addedContactListFromDb.contacts.length).toEqual(0);
+    });
+  });
 
   describe('deleteContactList', () => {
     it('delete contact by id correctly', async () => {

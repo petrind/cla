@@ -39,7 +39,11 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-## Postman collection (public)
+## Swagger
+
+Open [http://localhost:4000/api/](http://localhost:4000/api/) after running the app.
+
 
 ## Entity Relationship Diagram
 
+## DB Dump

@@ -17,7 +17,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
     ports:
-      - 4000:3000
+      - 4000:4000
       - 4229:9229
     working_dir: /contact-list-api
     command: yarn run ${NEST_SCRIPT}

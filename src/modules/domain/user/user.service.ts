@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@entities/user.entity';
 import { Repository } from 'typeorm';
@@ -12,11 +12,21 @@ export class UserService {
   ) {}
 
   async getUser(id: string): Promise<User> {
-    return this.repo.findOne(id);
+    const user = await this.repo.findOne(id);
+    if (user) {
+      throw new BadRequestException('contact not found');
+    }
+
+    return user;
   }
 
   async getUserByemail(email: string): Promise<User> {
-    return this.repo.findOne({ email: email });
+    const user = await this.repo.findOne({ email: email });
+    if (user) {
+      throw new BadRequestException('contact not found');
+    }
+
+    return user;
   }
 
   async registerUser(createUserDto: CreateUserDto): Promise<User> {
@@ -24,10 +34,20 @@ export class UserService {
   }
 
   async updateUser(id: string, updateUserDto: CreateUserDto): Promise<User> {
+    const user = await this.repo.findOne(id);
+    if (user) {
+      throw new BadRequestException('contact not found');
+    }
+
     return this.repo.save({ ...updateUserDto, id });
   }
 
   async deleteUser(id: string): Promise<string> {
+    const user = await this.repo.findOne(id);
+    if (user) {
+      throw new BadRequestException('contact not found');
+    }
+
     await this.repo.delete(id);
     return id;
   }

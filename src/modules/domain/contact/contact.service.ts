@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Contact } from '@entities/contact.entity';
 import { Repository } from 'typeorm';
@@ -13,7 +13,12 @@ export class ContactService {
   ) {}
 
   async getContact(id: string): Promise<Contact> {
-    return this.repo.findOne(id);
+    const contact = await this.repo.findOne(id);
+    if (contact) {
+      throw new BadRequestException('contact not found');
+    }
+
+    return contact;
   }
 
   async getContactsByUser(userId: string): Promise<Contact[]> {
@@ -28,10 +33,20 @@ export class ContactService {
     id: string,
     updateContactDto: UpdateContactDto,
   ): Promise<Contact> {
+    const contact = await this.repo.findOne(id);
+    if (contact) {
+      throw new BadRequestException('contact not found');
+    }
+
     return this.repo.save({ ...updateContactDto, id });
   }
 
   async deleteContact(id: string): Promise<string> {
+    const contact = await this.repo.findOne(id);
+    if (contact) {
+      throw new BadRequestException('contact not found');
+    }
+
     await this.repo.delete(id);
     return id;
   }
