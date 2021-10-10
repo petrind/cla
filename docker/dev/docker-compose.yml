@@ -44,8 +44,6 @@ services:
       POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
       PGPASSWORD: ${PGPASSWORD}
       TZ: ${POSTGRES_TZ}
-    # Open 4433 on host for developers to connect if needed.
-    # NOTE: nest service will NOT use this. It connects to 4432.
     ports:
       - 5433:${DB_PORT}
     command: -p ${DB_PORT}
