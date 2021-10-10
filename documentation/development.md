@@ -1,8 +1,8 @@
 ## Prerequisite
 
-- Node (preferrably v14.16.1)
-- docker
-- yarn
+- [Node](https://nodejs.org/en/download/) (preferrably v14.16.1)
+- [docker](https://docs.docker.com/engine/install/)
+- [yarn](https://classic.yarnpkg.com/lang/en/docs/install)
 
 ## Installation
 
@@ -16,7 +16,7 @@ $ yarn install
 # development
 $ yarn run start
 
-# watch mode
+# watch mode (Automatic compile)
 $ yarn run start:dev
 
 # production mode
@@ -39,11 +39,15 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-## Swagger
+## Swagger Documentation
 
 Open [http://localhost:4000/api/](http://localhost:4000/api/) after running the app.
 
-
 ## Entity Relationship Diagram
+![ERD](contact-list-api-erd.png)
 
-## DB Dump
+## Connecting to DB
+
+To connect to local DB from your machine:
+- The credential is located at .env.example.
+- While the port is 5433 (specified in [docker-compose](../docker/dev/docker-compose.yml))
