@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Contact } from 'src/entities/contact.entity';
+import { Contact } from '@entities/contact.entity';
 import { Repository } from 'typeorm';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
@@ -16,7 +16,7 @@ export class ContactService {
     return this.repo.findOne(id);
   }
 
-  async getContactByUser(userId: string): Promise<Contact[]> {
+  async getContactsByUser(userId: string): Promise<Contact[]> {
     return this.repo.find({ userId });
   }
 

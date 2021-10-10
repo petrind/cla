@@ -1,0 +1,28 @@
+#!/bin/sh
+CONTAINER_NAME=contact-list-db-test
+
+CURRENT_DIR=$(cd $(dirname $0); pwd)
+DOT_ENV_FILE=$CURRENT_DIR/../.env.test
+source $DOT_ENV_FILE
+
+# Check if the container already exists.
+# If exist, start it with 'docker start'.
+# If not exist create it with 'docker run'.
+docker inspect $CONTAINER_NAME > /dev/null 2>&1
+if test "$?" = "0"; then
+  docker start $CONTAINER_NAME
+else
+  docker run --name $CONTAINER_NAME \
+    -d \
+    -p $DB_PORT:$DB_PORT_IN_CONTAINER \
+    -e POSTGRES_USER=$DB_USERNAME \
+    -e POSTGRES_PASSWORD=$DB_PASSWORD \
+    -e POSTGRES_DB=$DB_NAME \
+    -e POSTGRES_INITDB_ARGS=$POSTGRES_INITDB_ARGS \
+    -e PGPASSWORD=$PGPASSWORD \
+    -e TZ=$POSTGRES_TZ \
+    postgres:12
+
+  echo "Database test container - creating ... (first run only)"
+  sleep 10
+fi

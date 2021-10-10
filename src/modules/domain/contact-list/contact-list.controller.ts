@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 
 import { ContactListService } from './contact-list.service';
-import { ContactList } from 'src/entities/contact-list.entity';
+import { ContactList } from '@entities/contact-list.entity';
 import { CreateContacListDto } from './dto/create-contact-list.dto';
 import { UpdateContactListDto } from './dto/update-contact-list.dto';
 import { AddContactsToContacListDto } from './dto/add-contacts-to-contact-list.dto';

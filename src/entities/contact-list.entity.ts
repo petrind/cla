@@ -19,8 +19,9 @@ export class ContactList extends BaseEntity {
   userId: string;
 
   @JoinColumn({ name: 'userId' })
-  @ManyToOne(() => User, (user) => user.contacts)
-  // ondelete
+  @ManyToOne(() => User, (user) => user.contacts, {
+    onDelete: 'CASCADE',
+  })
   user: User;
 
   @Index()
@@ -29,6 +30,7 @@ export class ContactList extends BaseEntity {
 
   @ManyToMany(() => Contact, (contact) => contact.contactLists, {
     cascade: true,
+    onDelete: 'CASCADE',
   })
   contacts: Contact[];
 }

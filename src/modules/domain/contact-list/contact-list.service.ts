@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ContactList } from 'src/entities/contact-list.entity';
-import { Contact } from 'src/entities/contact.entity';
+import { ContactList } from '@entities/contact-list.entity';
 import { In, Repository } from 'typeorm';
 import { CreateContacListDto } from './dto/create-contact-list.dto';
 import { UpdateContactListDto } from './dto/update-contact-list.dto';
+import { Contact } from '@entities/contact.entity';
 
 @Injectable()
 export class ContactListService {

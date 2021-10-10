@@ -20,10 +20,14 @@ export class User extends BaseEntity {
   @Column()
   email: string;
 
-  @OneToMany(() => Contact, (contact) => contact.user)
+  @OneToMany(() => Contact, (contact) => contact.user, {
+    cascade: true,
+  })
   contacts: Contact[];
 
-  @OneToMany(() => ContactList, (contactList) => contactList.user)
+  @OneToMany(() => ContactList, (contactList) => contactList.user, {
+    cascade: true,
+  })
   contactLists: ContactList[];
 
   @BeforeInsert()

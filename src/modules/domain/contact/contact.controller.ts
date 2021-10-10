@@ -1,3 +1,4 @@
+import { Contact } from '@entities/contact.entity';
 import {
   Body,
   Controller,
@@ -10,7 +11,6 @@ import {
 } from '@nestjs/common';
 
 import { ContactService } from './contact.service';
-import { Contact } from 'src/entities/contact.entity';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 
@@ -25,7 +25,7 @@ export class ContactController {
 
   @Get('/by-user/:userId')
   async getContactsByUser(@Param('userId') userId: string): Promise<Contact[]> {
-    return this.contactService.getContactByUser(userId);
+    return this.contactService.getContactsByUser(userId);
   }
 
   @Post('/add-contact')

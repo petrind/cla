@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
-import { User } from 'src/entities/user.entity';
+import { User } from '@entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 

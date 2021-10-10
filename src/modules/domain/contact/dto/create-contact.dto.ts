@@ -1,5 +1,5 @@
 import { PickType } from '@nestjs/swagger';
-import { Contact } from 'src/entities/contact.entity';
+import { Contact } from '@entities/contact.entity';
 
 export class CreateContactDto extends PickType(Contact, [
   'name',

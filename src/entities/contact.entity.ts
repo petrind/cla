@@ -20,8 +20,9 @@ export class Contact extends BaseEntity {
   userId: string;
 
   @JoinColumn({ name: 'userId' })
-  @ManyToOne(() => User, (user) => user.contacts)
-  // ondelete
+  @ManyToOne(() => User, (user) => user.contacts, {
+    onDelete: 'CASCADE',
+  })
   user: User;
 
   @Index()
