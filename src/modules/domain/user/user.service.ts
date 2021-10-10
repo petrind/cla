@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
-import { ContactList } from 'src/entities/contact-list.entity';
-import { Contact } from 'src/entities/contact.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
-import { Connection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
@@ -15,6 +13,10 @@ export class UserService {
 
   async getUser(id: string): Promise<User> {
     return this.repo.findOne(id);
+  }
+
+  async getUserByemail(email: string): Promise<User> {
+    return this.repo.findOne({ email: email });
   }
 
   async registerUser(createUserDto: CreateUserDto): Promise<User> {

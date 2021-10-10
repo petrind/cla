@@ -30,5 +30,5 @@ export class ContactList extends BaseEntity {
   @ManyToMany(() => Contact, (contact) => contact.contactLists, {
     cascade: true,
   })
-  contacts?: Contact[];
+  contacts: Contact[];
 }

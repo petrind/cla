@@ -12,7 +12,8 @@ import { ContactListService } from './contact-list.service';
 import { ContactList } from 'src/entities/contact-list.entity';
 import { CreateContacListDto } from './dto/create-contact-list.dto';
 import { UpdateContactListDto } from './dto/update-contact-list.dto';
-import { AddContactToContacListDto } from './dto/add-contact-to-contact-list.dto';
+import { AddContactsToContacListDto } from './dto/add-contacts-to-contact-list.dto';
+import { RemoveContactsFromContacListDto } from './dto/remove-contacts-from-contact-list.dto';
 
 @Controller('api/v1/contact-list')
 export class ContactListController {
@@ -37,23 +38,34 @@ export class ContactListController {
     return this.contacListService.createContactList(createContactlistDto);
   }
 
-  @Put('/add-contact-to-contact-list/:contactListId')
-  async addContactToContactList(
-    @Param('contactListId') contactListId: string,
-    @Body() createContactlistDto: AddContactToContacListDto,
-  ): Promise<string> {
-    return this.contacListService.addContactToContactList(
-      createContactlistDto.contactId,
-      contactListId,
-    );
-  }
-
   @Put('/:id')
   async updateContactList(
     @Param('id') id: string,
     @Body() updateContactListDto: UpdateContactListDto,
   ): Promise<ContactList> {
     return this.contacListService.updateContactList(id, updateContactListDto);
+  }
+
+  @Put('/add-contacts-to-contact-list/:contactListId')
+  async addContactToContactList(
+    @Param('contactListId') contactListId: string,
+    @Body() createContactlistDto: AddContactsToContacListDto,
+  ): Promise<string> {
+    return this.contacListService.addContactsToContactList(
+      createContactlistDto.contactIds,
+      contactListId,
+    );
+  }
+
+  @Put('/remove-contacts-from-contact-list/:contactListId')
+  async removeContactToContactList(
+    @Param('contactListId') contactListId: string,
+    @Body() createContactlistDto: RemoveContactsFromContacListDto,
+  ): Promise<string> {
+    return this.contacListService.removeContactsFromContactList(
+      createContactlistDto.contactIds,
+      contactListId,
+    );
   }
 
   @Delete('/:id')

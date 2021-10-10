@@ -29,7 +29,7 @@ export class ContactController {
   }
 
   @Post('/add-contact')
-  async createUser(
+  async createContact(
     @Body() createContactDto: CreateContactDto,
   ): Promise<Contact> {
     return this.contactService.createContact(createContactDto);
